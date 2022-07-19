@@ -1,7 +1,14 @@
-FROM node:17-alpine
-WORKDIR /app
+# Use a node 12 base image
+ARG NODE_VERSION=12
+FROM node:${NODE_VERSION}-alpine
+
+WORKDIR /usr/src/app
+
+# Copy package.json and install node modules
 COPY package.json .
-RUN npm install --location=global
-COPY . .
+RUN npm install
+
+# Add app source code
+ADD . /usr/src/app
 EXPOSE 8080
-CMD npm run start-dev
+ENTRYPOINT npm run start-dev
